@@ -50,7 +50,7 @@ class BleConnection:
                 time.sleep(0.2)
 
         
-    def whrite(self, message):
+    def write(self, message):
             btime = bytes(message , 'utf-8')
             try:        
                 return self.ch_Tx.write(btime, True)
