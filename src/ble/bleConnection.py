@@ -1,28 +1,26 @@
-from email import message
 from bluepy import btle
 import threading
+<<<<<<< HEAD
 import time
 message = "FiresMessage"
+=======
+
+message = ""
+
+>>>>>>> 05a039e222017b0e8d791186a0e88ef494592291
 
 class MyDelegate(btle.DefaultDelegate):
     def __init__(self):
         btle.DefaultDelegate.__init__(self)
-        # ... initialise here
 
-    def handleNotification(self, cHandle, data):
+    def handle_notification(self, data):
         global message
-        message =  data 
-  
-
-        # ... perhaps check cHandle
-        # ... process 'data'
-
-# Initialisation  -------
+        message = data
 
 
 class BleConnection:
-    def __init__(self, mac_addres, on_message_receive):
-        self.p = btle.Peripheral(mac_addres,btle.ADDR_TYPE_PUBLIC)  
+    def __init__(self, mac_address, on_message_receive):
+        self.p = btle.Peripheral(mac_address, btle.ADDR_TYPE_PUBLIC)
         self.on_message_receive = on_message_receive
         # Setup to turn notifications on, e.g.
         self.svc = self.p.getServiceByUUID(0xec00)
@@ -32,13 +30,10 @@ class BleConnection:
         self.p.setDelegate(MyDelegate())
         self.p.setMTU(512)
         self.setup_data = b"\x01\00"
-        self.p.writeCharacteristic(self.ch_Rx.valHandle+1, self.setup_data)
+        self.p.writeCharacteristic(self.ch_Rx.valHandle + 1, self.setup_data)
 
         self.notification_thread = threading.Thread(target=self.get_notification)
         self.notification_thread.start()
- 
-
-
 
     def get_notification(self):
         global message
@@ -49,14 +44,12 @@ class BleConnection:
             except:
                 time.sleep(0.5)
 
-        
-    def whrite(self, message):
-            btime = bytes(message , 'utf-8')
-            try:        
-                return self.ch_Tx.write(btime, True)
+    def send_notification(self, message_to_send):
+        str_message_to_bytes = bytes(message_to_send, 'utf-8')
+        try:
+            return self.ch_Tx.write(str_message_to_bytes, True)
 
-            except btle.BTLEException:
-                return "btle.BTLEException"
+        except btle.BTLEException:
+            return "btle.BTLEException"
 
-        
-    # Perhaps do something else here
+
