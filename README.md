@@ -2,10 +2,10 @@
 
 
 
-# Scan device
+## Scan device
 utility/scan.py to to scan the bluetooth device
 
-# BleConnection 
+## BleConnection 
 
 
 BleConnection object take as the first argument the mac address of the device with which we want to connect, and as second argument a function that is run when is receive a notification
