@@ -3,7 +3,7 @@
 
 
 ## Scan device
-utility/scan.py to to scan the bluetooth device
+utility/scan.py to scan the bluetooth device
 
 ## BleConnection 
 
