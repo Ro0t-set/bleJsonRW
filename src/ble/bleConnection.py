@@ -1,6 +1,7 @@
 from email import message
 from bluepy import btle
 import threading
+import time
 message = "FiresMessage"
 
 class MyDelegate(btle.DefaultDelegate):
@@ -24,9 +25,9 @@ class BleConnection:
         self.p = btle.Peripheral(mac_addres,btle.ADDR_TYPE_PUBLIC)  
         self.on_message_receive = on_message_receive
         # Setup to turn notifications on, e.g.
-        self.svc = self.p.getServiceByUUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")
-        self.ch_Tx = self.svc.getCharacteristics("6E400002-B5A3-F393-E0A9-E50E24DCCA9E")[0]
-        self.ch_Rx = self.svc.getCharacteristics("6E400003-B5A3-F393-E0A9-E50E24DCCA9E")[0]
+        self.svc = self.p.getServiceByUUID(0xec00)
+        self.ch_Tx = self.svc.getCharacteristics(0xec0e)[0]
+        self.ch_Rx = self.svc.getCharacteristics(0xec0e)[0]
 
         self.p.setDelegate(MyDelegate())
         self.p.setMTU(512)
@@ -42,8 +43,11 @@ class BleConnection:
     def get_notification(self):
         global message
         while True:
-            if self.p.waitForNotifications(1.0):
-                self.on_message_receive(message)
+            try:
+                if self.p.waitForNotifications(1.0):
+                    self.on_message_receive(message)
+            except:
+                time.sleep(0.5)
 
         
     def whrite(self, message):
