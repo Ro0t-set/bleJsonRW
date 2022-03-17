@@ -1,5 +1,5 @@
 from  ble.bleConnection import BleConnection
-import asyncio
+import time
 #30:ae:a4:97:9f:32
 
 def printData(mes):
@@ -7,6 +7,9 @@ def printData(mes):
 
 
 esp32 = BleConnection("f0:08:d1:cc:dd:9e", printData)
-esp32.whrite("ciao espppp")
 
-print("test")
+while True:
+    print(esp32.whrite("ciao, sono rasp"))
+    time.sleep(2)
+
+
